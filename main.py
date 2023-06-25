@@ -9,14 +9,13 @@ from langchain.prompts import PromptTemplate
 from langchain.document_loaders import CSVLoader
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
-from langchain.vectorstores import FAISS
 from langchain.embeddings.cohere import CohereEmbeddings
 from langchain.llms import Cohere
 
 
 # OPENAI_API_KEY = os.environ.get("OPENAI_API")
 GIT_TOKEN = os.environ.get("GIT_TOKEN")
-COHERE_API_KEY = "zb0OV3gUQKzYO72fRdiNfD4CGB4czVmTIkWxLTCX"
+COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
 GPT_TOKEN_LIMIT = 2048
 MAX_LINE_LENGTH = 80
 
@@ -149,8 +148,8 @@ def analyze_repos(repo_info):
     # Load the CSV file and generate embeddings using Cohere API
     loader = CSVLoader(file_path="repo_data.csv", encoding="utf-8")
     csv_data = loader.load()
-    csv_embeddings = Cohere(api_key=COHERE_API_KEY)
-    vectors = FAISS.from_documents(csv_data, csv_embeddings)
+    csv_embeddings = CohereEmbeddings(api_key=COHERE_API_KEY)
+    vectors = Qdrant.from_documents(csv_data, csv_embeddings)
     # Define the context and prompt templates for the PromptSession
     context = """
     You are a Supersmart Github Repository AI system. You are a superintelligent AI that answers questions about Github Repositories and can understand the technical complexity of a repo.
