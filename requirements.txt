@@ -1,0 +1,11 @@
+django
+pygments
+PyGithub
+langchain
+nbformat
+tiktoken
+cohere 
+qdrant-client
+chardet
+faiss-cpu
+streamlit
