@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import nbformat
 import chardet
+import cohere
 import streamlit as st
 from nbconvert import PythonExporter
 from github import Github
@@ -13,11 +14,11 @@ from langchain.embeddings.cohere import CohereEmbeddings
 from langchain.llms import Cohere
 
 
-# OPENAI_API_KEY = os.environ.get("OPENAI_API")
 GIT_TOKEN = os.environ.get("GIT_TOKEN")
 COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
-GPT_TOKEN_LIMIT = 2048
+# GPT_TOKEN_LIMIT = 2048
 MAX_LINE_LENGTH = 80
+co = cohere.Client(COHERE_API_KEY)
 
 
 def preprocess_file(file_path: str) -> list:
@@ -177,7 +178,7 @@ def analyze_repos(repo_info):
     """
     # Define the PromptSession and the RetrievalQA chain
     chain_type_kwargs = {"prompt": PromptTemplate(template=prompt_template, input_variables=["context", "question"])}
-    chain = RetrievalQA.from_chain_type(llm=Cohere(model="command-nightly", temperature=0),
+    chain = RetrievalQA.from_chain_type(llm=Cohere(cohere_api_key=COHERE_API_KEY, model="command-nightly", temperature=0),
                                         chain_type="stuff",
                                         retriever=vectors.as_retriever(),
                                         input_key="question",
