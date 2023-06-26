@@ -149,7 +149,7 @@ def analyze_repos(repo_info):
     # Load the CSV file and generate embeddings using Cohere API
     loader = CSVLoader(file_path="repo_data.csv", encoding="utf-8")
     csv_data = loader.load()
-    texts = csv_data['contents']
+    texts = csv_data[repo['contents'] for repo in csv_data]
     csv_embeddings = co.embed(texts).embeddings
     vectors = Qdrant.from_documents(csv_data, csv_embeddings)
     # Define the context and prompt templates for the PromptSession
