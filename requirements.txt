@@ -1,5 +1,5 @@
-django
 pygments
+nbconvert
 PyGithub
 langchain
 nbformat
